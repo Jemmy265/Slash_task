@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slash_task/domain/Model/Product.dart';
 
 class ProductWidget extends StatelessWidget {
-  String productimagePath;
-  String brandimagePath;
-  String productName;
-  double price;
+  Product product;
 
-  ProductWidget(
-      {required this.productimagePath,
-      required this.productName,
-      required this.price,
-      required this.brandimagePath});
+  ProductWidget({required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +18,7 @@ class ProductWidget extends StatelessWidget {
           Stack(
             alignment: Alignment.topRight,
             children: [
-              Image.asset(productimagePath),
+              Image.asset(product.imagePath),
               ImageIcon(
                   AssetImage("assets/images/Heart--Streamline-Flex 1.png"))
             ],
@@ -35,7 +29,7 @@ class ProductWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                productName,
+                product.name,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -50,10 +44,10 @@ class ProductWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "EGP $price",
+                "EGP ${product.price}",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
-              Image.asset(brandimagePath),
+              Image.asset(product.brandimagePath),
               Image.asset("assets/images/add.png"),
             ],
           )

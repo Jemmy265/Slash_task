@@ -39,8 +39,13 @@ dependencies:
   flutter_screenutil: ^5.9.3
   dropdown_button2: ^2.3.9
   flutter_image_slideshow: ^0.1.6
+  flutter_bloc: ^8.1.6
+  injectable: ^2.3.5
+  get_it: ^7.6.7
 
 dev_dependencies:
+  injectable_generator: ^2.4.2
+  build_runner: ^2.4.9
   flutter_test:
     sdk: flutter
 

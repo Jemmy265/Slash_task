@@ -1,7 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slash_task/di/di.dart';
+import 'package:slash_task/domain/Model/Product.dart';
+import 'package:slash_task/presentation/Home/Home_Screen_State.dart';
+import 'package:slash_task/presentation/Home/Home_Screen_ViewModel.dart';
 import 'package:slash_task/presentation/components/category_item.dart';
 import 'package:slash_task/presentation/components/product_widget.dart';
 import 'package:slash_task/presentation/components/title_item.dart';
@@ -16,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeScreenViewModel viewModel = getIt<HomeScreenViewModel>();
   final List<String> locations = [
     'Nasr City',
     'Zamalek',
@@ -26,7 +32,39 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedLocation;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewModel.getAllProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return BlocBuilder(
+      bloc: viewModel,
+      builder: (context, state) {
+        if (state is LoadingState) {
+          return CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+          );
+        } else if (state is InitialState) {
+          return CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+          );
+        } else if (state is SuccessState) {
+          return BuildSuccessWidget(state.products);
+        } else if (state is ErrorState) {
+          return Center(
+            child: Text(state.errorMessage),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget BuildSuccessWidget(List<Product> products) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(15.0),
@@ -56,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: DropdownButton2<String>(
                                 isExpanded: true,
                                 hint: Text(
-                                  'Select location',
+                                  'Select location\nNasr City',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Theme.of(context).hintColor,
@@ -256,7 +294,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ]),
     );
   }
-
   List<Widget> categories = [
     CategoryItem(imagePath: "assets/images/fashion.png", title: "Fashion"),
     CategoryItem(imagePath: "assets/images/games.png", title: "Games"),
@@ -271,128 +308,200 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List<Widget> bestSelling = [
     ProductWidget(
-        productimagePath: "assets/images/stitch.png",
-        productName: "Stitch Keychain",
-        price: 55,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 1,
+          name: "Stitch Keychain",
+          price: 55,
+          imagePath: "assets/images/stitch.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/baby dress.png",
-        productName: "Baby Girl Dress",
-        price: 230,
-        brandimagePath: "assets/images/dress logo.png"),
+      product: Product(
+          id: 2,
+          name: "Baby Girl Dress",
+          price: 230,
+          imagePath: "assets/images/baby dress.png",
+          brandimagePath: "assets/images/dress logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/stitch.png",
-        productName: "Stitch Keychain",
-        price: 55,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 1,
+          name: "Stitch Keychain",
+          price: 55,
+          imagePath: "assets/images/stitch.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/baby dress.png",
-        productName: "Baby Girl Dress",
-        price: 230,
-        brandimagePath: "assets/images/dress logo.png"),
+      product: Product(
+          id: 2,
+          name: "Baby Girl Dress",
+          price: 230,
+          imagePath: "assets/images/baby dress.png",
+          brandimagePath: "assets/images/dress logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/stitch.png",
-        productName: "Stitch Keychain",
-        price: 55,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 1,
+          name: "Stitch Keychain",
+          price: 55,
+          imagePath: "assets/images/stitch.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/baby dress.png",
-        productName: "Baby Girl Dress",
-        price: 230,
-        brandimagePath: "assets/images/dress logo.png"),
+      product: Product(
+          id: 2,
+          name: "Baby Girl Dress",
+          price: 230,
+          imagePath: "assets/images/baby dress.png",
+          brandimagePath: "assets/images/dress logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/stitch.png",
-        productName: "Stitch Keychain",
-        price: 55,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 1,
+          name: "Stitch Keychain",
+          price: 55,
+          imagePath: "assets/images/stitch.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/baby dress.png",
-        productName: "Baby Girl Dress",
-        price: 230,
-        brandimagePath: "assets/images/dress logo.png"),
+      product: Product(
+          id: 2,
+          name: "Baby Girl Dress",
+          price: 230,
+          imagePath: "assets/images/baby dress.png",
+          brandimagePath: "assets/images/dress logo.png"),
+    ),
   ];
   List<Widget> newArrival = [
     ProductWidget(
-        productimagePath: "assets/images/bag.png",
-        productName: "Printes bag",
-        price: 180,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Printed bag",
+          price: 180,
+          imagePath: "assets/images/bag.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/notebook.png",
-        productName: "Notebook",
-        price: 80,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Notebook",
+          price: 80,
+          imagePath: "assets/images/notebook.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/bag.png",
-        productName: "Printes bag",
-        price: 180,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Printed bag",
+          price: 180,
+          imagePath: "assets/images/bag.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/notebook.png",
-        productName: "Notebook",
-        price: 80,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Notebook",
+          price: 80,
+          imagePath: "assets/images/notebook.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/bag.png",
-        productName: "Printes bag",
-        price: 180,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Printed bag",
+          price: 180,
+          imagePath: "assets/images/bag.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/notebook.png",
-        productName: "Notebook",
-        price: 80,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Notebook",
+          price: 80,
+          imagePath: "assets/images/notebook.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/bag.png",
-        productName: "Printes bag",
-        price: 180,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Printed bag",
+          price: 180,
+          imagePath: "assets/images/bag.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/notebook.png",
-        productName: "Notebook",
-        price: 80,
-        brandimagePath: "assets/images/keychain logo.png")
+      product: Product(
+          id: 2,
+          name: "Notebook",
+          price: 80,
+          imagePath: "assets/images/notebook.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
   ];
   List<Widget> recommended = [
     ProductWidget(
-        productimagePath: "assets/images/jacket.png",
-        productName: "Leather Jacket",
-        price: 340,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Leather Jacket",
+          price: 340,
+          imagePath: "assets/images/jacket.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/medal.png",
-        productName: "Dog Medal",
-        price: 45,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Dog Medal",
+          price: 45,
+          imagePath: "assets/images/medal.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/jacket.png",
-        productName: "Leather Jacket",
-        price: 340,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Leather Jacket",
+          price: 340,
+          imagePath: "assets/images/jacket.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/medal.png",
-        productName: "Dog Medal",
-        price: 45,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Dog Medal",
+          price: 45,
+          imagePath: "assets/images/medal.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/jacket.png",
-        productName: "Leather Jacket",
-        price: 340,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Leather Jacket",
+          price: 340,
+          imagePath: "assets/images/jacket.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/medal.png",
-        productName: "Dog Medal",
-        price: 45,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Dog Medal",
+          price: 45,
+          imagePath: "assets/images/medal.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/jacket.png",
-        productName: "Leather Jacket",
-        price: 340,
-        brandimagePath: "assets/images/bag logo.png"),
+      product: Product(
+          id: 1,
+          name: "Leather Jacket",
+          price: 340,
+          imagePath: "assets/images/jacket.png",
+          brandimagePath: "assets/images/bag logo.png"),
+    ),
     ProductWidget(
-        productimagePath: "assets/images/medal.png",
-        productName: "Dog Medal",
-        price: 45,
-        brandimagePath: "assets/images/keychain logo.png"),
+      product: Product(
+          id: 2,
+          name: "Dog Medal",
+          price: 45,
+          imagePath: "assets/images/medal.png",
+          brandimagePath: "assets/images/keychain logo.png"),
+    ),
   ];
 }

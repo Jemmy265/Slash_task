@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slash_task/di/di.dart';
 import 'package:slash_task/presentation/Home/Home_Screen.dart';
 
 void main() {
+  configureDependencies();
   runApp(const MyApp());
 }
 
